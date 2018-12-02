@@ -1,0 +1,61 @@
+<div class="form-wrapper">
+  <h1>Filter Data</h1>
+
+  <form [formGroup]="formGroup" (ngSubmit)="saveTask()">
+    <div class="form-item">
+      <label>worker</label>
+      <select formControlName="worker" (change)="filterArray()">
+        <option *ngFor="let worker of workersArray" [ngValue]="worker.workerName">{{worker.workerName}}</option>
+      </select>
+    </div>
+
+    <div class="form-item">
+      <label>project</label>
+      <select formControlName="project" (change)="filterArray()">
+        <option *ngFor="let project of projectsArray" [ngValue]="project.projectName">{{project.projectName}}</option>
+      </select>
+    </div>
+
+    <div class="form-item">
+      <label>team head</label>
+      <select formControlName="teamHead" (change)="filterArray()">
+        <option *ngFor="let teamHead of teamHeadsArray" [ngValue]="teamHead.workerName">{{teamHead.workerName}}</option>
+      </select>
+    </div>
+
+    <div class="form-item">
+      <label>month</label>
+      <select formControlName="month" (change)="filterArray()">
+        <option *ngFor="let month of monthArray;let i=index" [ngValue]="i+1">{{month}}</option>
+      </select>
+    </div>
+
+    <div class="button-panel">
+      <input type="button" class="button" value="Refresh" (click)="refresh()"/>
+    </div>
+
+    <div class="button-panel">
+      <input type="button" class="button" value="Export to excel" (click)="exportToExcel()" />
+    </div>
+
+
+  </form>
+</div>
+<p-treeTable *ngIf="filterReportData.length>0" [value]="filterReportData">
+  <ng-template pTemplate="header">
+      <tr>
+          <th *ngFor="let col of cols">
+              {{col.header}}
+          </th>
+      </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-rowNode let-rowData="rowData">
+      <tr>
+          <td *ngFor="let col of cols; let i = index">
+              <p-treeTableToggler [rowNode]="rowNode" *ngIf="i == 0" ></p-treeTableToggler>
+              <span>{{rowData[col.field]}}</span>    
+          </td>
+
+      </tr>
+  </ng-template>
+</p-treeTable>
